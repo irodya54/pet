@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: facade-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${issure.uri:http://localhost:8080/realms/pet_service}
+      client:
+        provider:
+          keycloak:
+            issuer-uri: ${issure.uri:http://localhost:8080/realms/pet_service}
+            userNameAttribute: preferred_username
+        registration:
+          keycloak:
+            clientId: pet-service
+            clientSecret: ${issure.secret:fjLDghJPgY5schGbuKoNvqeWTnJKaOh8}
+            scope: openid
+  cloud:
+    openfeign:
+      client:
+        config:
+          pet-feign:
+            url:
+            connect-timeout:
+            logger-level: full
+            errorDecoder: com.example.SimpleErrorDecoder
+            retryer: com.example.SimpleRetryer
+server:
+  port: ${port:8081}
+
+logging:
+  level:
+    org.springframework.security: TRACE
